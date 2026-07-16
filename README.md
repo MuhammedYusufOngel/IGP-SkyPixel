@@ -1,4 +1,4 @@
-# 🦊 IGP-SkyPixel (OPGOdev2) - 2D Platform Oyunu
+# 🦊 IGP-SkyPixel (OPGOdev2) - 2D Platform Game
 
 <div align="center">
 
@@ -9,134 +9,166 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 <p align="center">
-  <b>Unity 6 (Universal Render Pipeline 2D) ile geliştirilmiş, akıcı fizik mekaniklerine, yapay zeka destekli düşmanlara ve gelişmiş kayıt sistemine sahip modern 2D Pixel Art Platform Oyunu.</b>
+  <b>A modern 2D Pixel Art Platformer built with Unity 6 (Universal Render Pipeline 2D), featuring fluid physics mechanics, AI-driven enemy patrols, and a robust binary serialization save/load system.</b>
 </p>
 
 </div>
 
 ---
 
-## 📖 Proje Hakkında
+## 📸 Gameplay & Screenshots
 
-**IGP-SkyPixel (OPGOdev2)**, klasik 2D platform oyunlarının nostaljik havasını modern oyun programlama prensipleriyle birleştiren zengin içerikli bir Unity projesidir. **Ansimuz**'un sevilen *SunnyLand* piksel sanat paketinden ilham alınarak tasarlanan oyunda, oyuncular zorlu platformlarda ilerleyip elmasları toplarken farklı davranış modeline sahip düşmanlarla mücadele ederler.
-
-Bu proje, **Object-Oriented Programming (OOP)** prensipleri, **Raycast/Physics2D zemin algılama mekanikleri**, **Olay/Durum tabanlı yapay zeka devriyeleri** ve **Binary Serialization ile kalıcı kayıt sistemi (Save/Load)** gibi gelişmiş oyun geliştirme yapılarını barındırır.
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="50%">
+        <b>⚔️ Combat & Stomp Mechanic</b><br>
+        <i>Leaping over bear enemies to stomp and score points over bridge environments.</i><br><br>
+        <img src="images/image_1.png" alt="Combat and Stomp Mechanic" width="100%" />
+      </td>
+      <td align="center" width="50%">
+        <b>🗺️ Platforming & Ruins Exploration</b><br>
+        <i>Navigating through ancient dungeon ruins and tight obstacle structures.</i><br><br>
+        <img src="images/image_2.png" alt="Platforming and Exploration" width="100%" />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" colspan="2">
+        <b>🚀 Dynamic Jumping & Level Navigation</b><br>
+        <i>Fluid aerial movement across multi-layered platforms and indoor chambers.</i><br><br>
+        <img src="images/image_3.png" alt="Dynamic Jumping and Level Navigation" width="80%" />
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
-## ✨ Öne Çıkan Özellikler
+## 📖 About the Project
 
-### 🎮 1. Akıcı Karakter Kontrolleri ve Çatışma Mekaniği
-- **Hassas Hareket & Zıplama (`PlayerCode`)**: Çift yönlü yatay hareket, `Physics2D.OverlapCircle` ile zemin (Ground) algılama, zıplama ve düşüş animasyonlarının (`isWalking`, `isJumping`, `isFalling`) gerçek zamanlı kontrolü.
-- **Can ve Hasar Sistemi (`PlayerHitboxCode`)**: Oyuncunun 5 adet kalp (UI Image) ile temsil edilen canı bulunur. Düşman teması ile can eksilir ve ölüm animasyon efekti prefabı anında sahnede oluşturulur.
-- **Düşman Ezme / Stomp Mekaniği (`PlayerFootCode`)**: Klasik platform oyunlarında olduğu gibi, oyuncu havadan düşerken (`linearVelocityY < 0`) bir düşmanın tepesine zıpladığında düşmanı etkisiz hale getirir, havaya doğru yukarı seker ve +10 skor kazanır.
+**IGP-SkyPixel (OPGOdev2)** is a feature-rich Unity project that combines the nostalgic charm of classic 2D platformers with modern game programming principles. Inspired by **Ansimuz**'s beloved *SunnyLand* pixel art asset pack, players navigate challenging platforms, collect diamonds/gems, and battle enemies featuring distinct behaviors and AI patterns.
+
+This project demonstrates clean **Object-Oriented Programming (OOP)** architecture, **Raycast/Physics2D ground detection mechanics**, **state-driven enemy AI routines**, and a **Binary Serialization save/load system** that stores complete level snapshots across gaming sessions.
 
 ---
 
-### 🤖 2. Akıllı Düşman Yapay Zekaları (AI & Patrol Behaviors)
-Her düşman türü, oyuncu deneyimini zenginleştirmek için kendine has devriye ve saldırı algoritmalarıyla donatılmıştır:
+## ✨ Key Features
 
-| Düşman Türü | davranış & Yapay Zeka Mekaniği | Sorumlu Kod |
+### 🎮 1. Fluid Character Controls & Combat Mechanics
+- **Responsive Movement & Jumping (`PlayerCode`)**: Smooth horizontal velocity controls, precise ground check via `Physics2D.OverlapCircle`, and real-time animation transitions (`isWalking`, `isJumping`, `isFalling`) handled cleanly through Unity's Animator state machine.
+- **Health & Damage System (`PlayerHitboxCode`)**: The player has 5 lives represented by heart UI icons (`Image[] _hearts`). Contacting enemy hitboxes triggers a life deduction, instantly spawning visual death effects (`_death` prefab) and updating the UI.
+- **Stomp / Bounce Mechanic (`PlayerFootCode`)**: Just like in classic platformers, landing on top of an enemy while falling (`linearVelocityY < 0`) eliminates the enemy, launches the player back into the air (`linearVelocity.y = 5`), and rewards the player with +10 score points (as demonstrated in the combat screenshot).
+
+---
+
+### 🤖 2. Intelligent Enemy AI & Patrol Behaviors
+Each enemy type is programmed with unique patrol algorithms and detection logic to keep gameplay challenging and dynamic:
+
+| Enemy Type | Behavior & AI Mechanics | Script Reference |
 | :--- | :--- | :--- |
-| 🐶 **Köpek (Dog)** | `DogDetectionCode` ile oyuncuyu algılama alanına girdiğinde (`isAware`) tetiklenir. Oyuncunun X koordinatına göre yönünü çevirir, ivmeli şekilde hızlanarak koşturur ve saldırır. Uçurumdan düştüğünde otomatik olarak yok olur. | [DogCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/DogCode.cs) |
-| 🐻 **Ayı (Bear)** | Belirli minimum (`minPosition`) ve maksimum (`maxPosition`) sınırlar arasında devriye gezer. `BearDetectionCode` ile oyuncuyu fark ettiğinde hızını anında **iki katına (`_velocity * 2`)** çıkararak amansızca takibe başlar. | [BearCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/BearCode.cs) |
-| 🐰 **Tavşan (Bunny)** | Zemin üzerinde periyodik olarak zıplayarak ilerler (`_jumpingVelocity`). Her zıplama sayacına (`counter`) bağlı olarak belirli aralıklarla yön değiştirir ve kendi animasyon durumlarını (`isJumping`/`isFalling`) dinamik yönetir. | [BunnyCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/BunnyCode.cs) |
-| 🐗 **Diğer Düşmanlar** | **Sırtlan (Hyena)**, **Domuz (Pig)** ve **Akbaba (Vulture)** gibi bölüm engelleri farklı hız ve devriye dinamikleriyle platform zorluğunu artırır. | `HyenaCode.cs`, `PigCode.cs`, `VultureCode.cs` |
+| 🐶 **Dog** | Equipped with `DogDetectionCode`, the dog detects when the player enters its awareness zone (`isAware`). Once alerted, it turns toward the player's X-coordinate and accelerates with burst impulse forces to chase and attack. Falls off cliffs gracefully (`y < -30f`) when dodged. | [DogCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/DogCode.cs) |
+| 🐻 **Bear** | Patrols back and forth between defined boundary points (`minPosition` and `maxPosition`). When `BearDetectionCode` triggers player awareness, the bear gets enraged and **doubles its velocity (`_velocity * 2`)** for an aggressive pursuit. | [BearCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/BearCode.cs) |
+| 🐰 **Bunny** | Moves by performing periodic jumps across terrain (`_jumpingVelocity`). Uses an internal jump counter (`counter`) to dynamically switch patrol directions every few hops while adjusting its jump/fall animations. | [BunnyCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/BunnyCode.cs) |
+| 🐗 **Other Enemies** | **Hyena**, **Pig**, and **Vulture** provide varied ground and aerial obstacles across different level sections to test player timing and agility. | `HyenaCode.cs`, `PigCode.cs`, `VultureCode.cs` |
 
 ---
 
-### 💾 3. Binary Serialization ile Güvenli Kayıt (Save/Load) Sistemi
-Proje, Unity'nin standart `PlayerPrefs` yapısı yerine çok daha güvenli, esnek ve performansa duyarlı olan **Binary Serialization (`BinaryFormatter`)** yapısını kullanır.
+### 💾 3. Binary Serialization Save & Load System
+Instead of relying on basic `PlayerPrefs`, the project implements a secure, extensible, and high-performance **Binary Serialization (`BinaryFormatter`)** architecture to preserve game state.
 
-- **Neler Kaydedilir?**
-  - 🧍 **Oyuncu (`PlayerData`)**: Oyuncunun o anki canı (`health`), 3 boyutlu konumu (`Vector3 position`), skoru (`score`) ve hayatta olma durumu (`isDead`).
-  - 👾 **Düşmanlar (`EnemyData`)**: Sahnedeki tüm düşmanların anlık koordinatları ve aktiflik (`activeSelf`) durumları. (Öldürülen düşmanlar yükleme yapıldığında ölü kalmaya devam eder!)
-  - 💎 **Ödüller / Elmaslar (`DiamondData`)**: Haritadaki tüm elmasların toplanıp toplanmadığı bilgisi (`activeSelf`) ve koordinatları.
-- **Nasıl Çalışır?**  
-  `SaveSystem.cs` sınıfı `Application.persistentDataPath` altında her bölüme özel (`player_1.data`, `enemies_1.data`, `gems_1.data`) binary dosyalar oluşturarak oyunun o anki anlık fotoğrafını (Snapshot) kaydeder ve geri yükler.
-
----
-
-### 🎬 4. Bölüm ve Sahne Tasarımı (Scenes)
-Proje 3 temel sahneden oluşur:
-1. `Start.unity` (**Ana Menü**): Hareket eden sinematik arka plan ve oyuna başlama ekranı.
-2. `1.Bölüm.unity` (**Bölüm 1**): Temel platform mekaniklerinin, elmasların ve köprü/ormana ait düşmanların yer aldığı giriş bölümü.
-3. `2.Bölüm.unity` (**Bölüm 2**): Daha karmaşık platform yerleşimleri, artan düşman yoğunluğu ve gelişmiş engeller.
+- **What Gets Saved?**
+  - 🧍 **Player State (`PlayerData`)**: Current health (`health`), exact 3D world coordinates (`Vector3 position`), accumulated score (`score`), and active state (`isDead`).
+  - 👾 **Enemies State (`EnemyData`)**: The exact positions and active/inactive status (`activeSelf`) of every enemy in the scene. (Defeated enemies remain dead when you load a saved game!)
+  - 💎 **Collectibles / Gems (`DiamondData`)**: The active/collected state (`activeSelf`) and positions of all gems scattered throughout the level.
+- **How It Works:**  
+  `SaveSystem.cs` writes dedicated `.data` binary files (`player_1.data`, `enemies_1.data`, `gems_1.data`) directly into `Application.persistentDataPath` tailored specifically to the active scene/build index (`SceneManager.GetActiveScene().buildIndex`).
 
 ---
 
-## 🕹️ Kontroller ve Tuş Atamaları
+### 🎬 4. Multi-Level Structure & Scenes
+The project consists of 3 core scenes:
+1. `Start.unity` (**Main Menu**): Features a cinematic moving background sequence and interactive start prompt.
+2. `1.Bölüm.unity` (**Level 1**): Introductory level introducing core platforming mechanics, gem collection, and forest/bridge enemy types.
+3. `2.Bölüm.unity` (**Level 2**): Advanced level featuring complex platform layouts, increased enemy density, and tighter timing requirements.
 
-Oyunu oynarken veya test ederken aşağıdaki klavye kısayollarını kullanabilirsiniz:
+---
 
-| Tuş / Girdi | Eylem / İşlev | Açıklama |
+## 🕹️ Controls & Keybindings
+
+Use the following keyboard controls while playing or testing the game in the Unity Editor:
+
+| Key / Input | Action / Function | Description |
 | :---: | :--- | :--- |
-| <kbd>A</kbd> / <kbd>D</kbd> veya <kbd>←</kbd> / <kbd>→</kbd> | **Yatay Hareket** | Karakteri sola veya sağa doğru yürütür/koşturur. |
-| <kbd>Space (Boşluk)</kbd> | **Zıplama / Başlama** | Zemin üzerideyken zıplamayı sağlar. Ana menüde oyunu başlatır. |
-| <kbd>Q</kbd> | **Hızlı Kaydet (Quick Save)** | Oyuncunun konumunu, canını, skorunu, düşman ve elmas durumlarını kaydeder. |
-| <kbd>R</kbd> | **Hızlı Yükle (Quick Load)** | Son alınan kaydı (`.data` dosyalarını) okuyarak tüm haritayı o anki haline getirir. |
-| <kbd>L</kbd> | **1. Bölüme Geç / Sıfırla** | Sahneyi hızlıca `1.Bölüm` olarak yeniden yükler (`SceneManager.LoadScene(1)`). |
+| <kbd>A</kbd> / <kbd>D</kbd> or <kbd>←</kbd> / <kbd>→</kbd> | **Horizontal Movement** | Moves the character left or right across platforms. |
+| <kbd>Space</kbd> | **Jump / Start Game** | Makes the player jump (when grounded). Also starts the game from the main menu. |
+| <kbd>Q</kbd> | **Quick Save** | Instantly serializes and saves player health, position, score, plus all enemy and gem states. |
+| <kbd>R</kbd> | **Quick Load** | Deserializes the `.data` save files and restores the entire scene to your exact saved snapshot. |
+| <kbd>L</kbd> | **Reset / Load Level 1** | Quickly reloads Level 1 (`SceneManager.LoadScene(1)`) to start over. |
 
 ---
 
-## 📂 Proje Klasör ve Kod Mimarisi
+## 📂 Project Architecture & Folder Structure
 
 ```text
 d:\Projects\OPGOdev2\
 ├── Assets\
-│   ├── Animations\           # Karakter ve düşman animasyon kontrolcüleri (Animator Controllers)
-│   ├── Datas\                # Veri ve Kayıt Sistemi Sınıfları
-│   │   ├── SaveSystem.cs     # BinaryFormatter ile dosya yazma/okuma yöneticisi
-│   │   ├── PlayerData.cs     # Oyuncu serileştirme veri modeli
-│   │   ├── EnemyData.cs      # Düşman serileştirme veri modeli
-│   │   └── DiamondData.cs    # Elmas/Ödül serileştirme veri modeli
-│   ├── Prefabs\              # Oyuncu, Düşman, Ölüm Efekti ve Toplanabilir Obje Prefabları
-│   ├── Scenes\               # Oyun Sahne Dosyaları (Start, 1.Bölüm, 2.Bölüm)
-│   ├── Scripts\              # Oyun Mekanikleri ve Yapay Zeka Kodları
-│   │   ├── PlayerCode.cs     # Oyuncu hareket, zemin kontrolü ve animasyonlar
-│   │   ├── PlayerHitboxCode.cs # Oyuncu can/hasar alma, ölüm ve Save/Load tetikleyicisi
-│   │   ├── PlayerFootCode.cs # Düşman ezme (Stomp) ve yukarı zıplama mekaniği
-│   │   ├── ScoreManager.cs   # Singleton skor yöneticisi ve UI güncelleme
-│   │   ├── EnemiesCode.cs    # Bölümdeki tüm düşmanların toplu kayıt/yükleme yöneticisi
-│   │   ├── AwardsCode.cs     # Bölümdeki tüm elmasların toplu kayıt/yükleme yöneticisi
-│   │   ├── DogCode.cs        # Köpek düşmanı devriye ve kovalama yapay zekası
-│   │   ├── BearCode.cs       # Ayı düşmanı sınır devriyesi ve hızlanma yapay zekası
-│   │   ├── BunnyCode.cs      # Tavşan düşmanı zıplama ve yön değiştirme yapay zekası
-│   │   └── GemCode.cs        # Elmas toplama ve skor tetikleyicisi
-│   └── SunnyLand_Artwork\    # Piksel sanat varlıkları (Tilemap, Karakter, Arka planlar)
-└── ProjectSettings\          # Unity URP ve Girdi Sistemi (New Input System) ayarları
+│   ├── Animations\           # Animator Controllers and animation state machines for player & enemies
+│   ├── Datas\                # Serialization & Data Persistence Scripts
+│   │   ├── SaveSystem.cs     # BinaryFormatter read/write file management handler
+│   │   ├── PlayerData.cs     # Serializable data class for player snapshot
+│   │   ├── EnemyData.cs      # Serializable data class for enemy state
+│   │   └── DiamondData.cs    # Serializable data class for gem state
+│   ├── Prefabs\              # Prefabs for Player, Enemies, Death VFX, and Collectibles
+│   ├── Scenes\               # Unity Scene files (Start, 1.Bölüm, 2.Bölüm)
+│   ├── Scripts\              # Core Gameplay Mechanics and AI Controllers
+│   │   ├── PlayerCode.cs     # Player movement, physics ground checks, and animation triggers
+│   │   ├── PlayerHitboxCode.cs # Health deduction, death handling, and Save/Load hotkeys
+│   │   ├── PlayerFootCode.cs # Enemy stomp/bounce collision check and score reward logic
+│   │   ├── ScoreManager.cs   # Singleton score tracker and UI text updater
+│   │   ├── EnemiesCode.cs    # Batch save/load controller for all child enemy instances
+│   │   ├── AwardsCode.cs     # Batch save/load controller for all child gem instances
+│   │   ├── DogCode.cs        # Dog AI awareness detection and pursuit logic
+│   │   ├── BearCode.cs       # Bear AI boundary patrol and rage velocity boost logic
+│   │   ├── BunnyCode.cs      # Bunny AI hopping physics and direction-switch logic
+│   │   └── GemCode.cs        # Gem pickup trigger and score increment
+│   └── SunnyLand_Artwork\    # Pixel art textures, tilemaps, characters, and backgrounds
+├── images\                   # Gameplay screenshots and preview images
+│   ├── image_1.png           # Stomp combat showcase screenshot
+│   ├── image_2.png           # Ruins exploration screenshot
+│   └── image_3.png           # Aerial navigation and jump dynamic screenshot
+└── ProjectSettings\          # Unity URP configuration and New Input System settings
 ```
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma
+## 🚀 Installation & Getting Started
 
-1. **Gereksinimler:**
-   - [Unity Hub](https://unity.com/download) ve **Unity 6 (6000.4.5f1 veya üstü)** kurulu olmalıdır.
-   - IDE olarak **Visual Studio 2022** veya **JetBrains Rider** önerilir.
+1. **Prerequisites:**
+   - Install [Unity Hub](https://unity.com/download) and **Unity 6 (6000.4.5f1 or newer)** with URP support.
+   - Recommended IDE: **Visual Studio 2022** or **JetBrains Rider**.
 
-2. **Projeyi Açma:**
-   - Depoyu yerel bilgisayarınıza klonlayın veya indirin:
+2. **Opening the Project:**
+   - Clone this repository to your local machine:
      ```bash
      git clone https://github.com/MuhammedYusufOngel/IGP-SkyPixel.git
      ```
-   - **Unity Hub** uygulamasını açın -> **Add (Ekle)** butonuna tıklayın ve klonladığınız `OPGOdev2` klasörünü seçin.
-   - Projeyi Unity **6000.4.5f1** sürümü ile açın.
+   - Open **Unity Hub**, click on **Add**, and select the cloned `OPGOdev2` folder.
+   - Launch the project using Unity version **6000.4.5f1**.
 
-3. **Oyunu Başlatma:**
-   - Unity editöründe **Project** penceresinden `Assets/Scenes/Start.unity` sahnesine çift tıklayın.
-   - Editörün üst kısmındaki **Play (▶)** butonuna basarak oyunu deneyimleyin!
+3. **Running the Game:**
+   - In the Unity Editor, navigate to `Assets/Scenes/Start.unity` inside the **Project** window and double-click to open it.
+   - Press the **Play (▶)** button at the top of the Unity Editor to start playing!
 
 ---
 
-## 👨‍💻 Geliştirici & Katkıda Bulunanlar
+## 👨‍💻 Developer & Credits
 
-- **Proje Geliştiricisi**: Muhammed Yusuf Öngel
-- **Görsel Varlıklar (Artwork)**: Ansimuz (*SunnyLand Pixel Art Assets*)
-- **Ders / Kapsam**: Oyun Programlama Geliştirme Ödevi 2 (OPGOdev2)
+- **Project Developer**: Muhammed Yusuf Öngel
+- **Artwork & Visual Assets**: Ansimuz (*SunnyLand Pixel Art Assets*)
+- **Course / Assignment**: Game Programming Development Assignment 2 (OPGOdev2)
 
 ---
 
 <p align="center">
-  ⭐ Eğer bu projeyi beğendiyseniz GitHub üzerinde yıldız vermeyi unutmayın! ⭐
+  ⭐ If you found this project helpful or inspiring, please consider giving it a star on GitHub! ⭐
 </p>
