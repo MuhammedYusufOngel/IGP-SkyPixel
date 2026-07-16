@@ -1,4 +1,4 @@
-# 🦊 IGP-SkyPixel (OPGOdev2) - 2D Platform Game
+# IGP-SkyPixel - 2D Platform Game
 
 <div align="center">
 
@@ -16,7 +16,7 @@
 
 ---
 
-## 📸 Gameplay & Screenshots
+## Gameplay & Screenshots
 
 <div align="center">
   <table>
@@ -44,48 +44,48 @@
 
 ---
 
-## 📖 About the Project
+## About the Project
 
-**IGP-SkyPixel (OPGOdev2)** is a feature-rich Unity project that combines the nostalgic charm of classic 2D platformers with modern game programming principles. Inspired by **Ansimuz**'s beloved *SunnyLand* pixel art asset pack, players navigate challenging platforms, collect diamonds/gems, and battle enemies featuring distinct behaviors and AI patterns.
+**IGP-SkyPixel** is a feature-rich Unity project that combines the nostalgic charm of classic 2D platformers with modern game programming principles. Inspired by **Ansimuz**'s beloved *SunnyLand* pixel art asset pack, players navigate challenging platforms, collect diamonds/gems, and battle enemies featuring distinct behaviors and AI patterns.
 
 This project demonstrates clean **Object-Oriented Programming (OOP)** architecture, **Raycast/Physics2D ground detection mechanics**, **state-driven enemy AI routines**, and a **Binary Serialization save/load system** that stores complete level snapshots across gaming sessions.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 🎮 1. Fluid Character Controls & Combat Mechanics
+### 1. Fluid Character Controls & Combat Mechanics
 - **Responsive Movement & Jumping (`PlayerCode`)**: Smooth horizontal velocity controls, precise ground check via `Physics2D.OverlapCircle`, and real-time animation transitions (`isWalking`, `isJumping`, `isFalling`) handled cleanly through Unity's Animator state machine.
 - **Health & Damage System (`PlayerHitboxCode`)**: The player has 5 lives represented by heart UI icons (`Image[] _hearts`). Contacting enemy hitboxes triggers a life deduction, instantly spawning visual death effects (`_death` prefab) and updating the UI.
 - **Stomp / Bounce Mechanic (`PlayerFootCode`)**: Just like in classic platformers, landing on top of an enemy while falling (`linearVelocityY < 0`) eliminates the enemy, launches the player back into the air (`linearVelocity.y = 5`), and rewards the player with +10 score points (as demonstrated in the combat screenshot).
 
 ---
 
-### 🤖 2. Intelligent Enemy AI & Patrol Behaviors
+### 2. Intelligent Enemy AI & Patrol Behaviors
 Each enemy type is programmed with unique patrol algorithms and detection logic to keep gameplay challenging and dynamic:
 
 | Enemy Type | Behavior & AI Mechanics | Script Reference |
 | :--- | :--- | :--- |
-| 🐶 **Dog** | Equipped with `DogDetectionCode`, the dog detects when the player enters its awareness zone (`isAware`). Once alerted, it turns toward the player's X-coordinate and accelerates with burst impulse forces to chase and attack. Falls off cliffs gracefully (`y < -30f`) when dodged. | [DogCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/DogCode.cs) |
-| 🐻 **Bear** | Patrols back and forth between defined boundary points (`minPosition` and `maxPosition`). When `BearDetectionCode` triggers player awareness, the bear gets enraged and **doubles its velocity (`_velocity * 2`)** for an aggressive pursuit. | [BearCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/BearCode.cs) |
-| 🐰 **Bunny** | Moves by performing periodic jumps across terrain (`_jumpingVelocity`). Uses an internal jump counter (`counter`) to dynamically switch patrol directions every few hops while adjusting its jump/fall animations. | [BunnyCode.cs](file:///d:/Projects/OPGOdev2/Assets/Scripts/BunnyCode.cs) |
-| 🐗 **Other Enemies** | **Hyena**, **Pig**, and **Vulture** provide varied ground and aerial obstacles across different level sections to test player timing and agility. | `HyenaCode.cs`, `PigCode.cs`, `VultureCode.cs` |
+| **Dog** | Equipped with `DogDetectionCode`, the dog detects when the player enters its awareness zone (`isAware`). Once alerted, it turns toward the player's X-coordinate and accelerates with burst impulse forces to chase and attack. Falls off cliffs gracefully (`y < -30f`) when dodged. | [DogCode.cs](./Assets/Scripts/DogCode.cs) |
+| **Bear** | Patrols back and forth between defined boundary points (`minPosition` and `maxPosition`). When `BearDetectionCode` triggers player awareness, the bear gets enraged and **doubles its velocity (`_velocity * 2`)** for an aggressive pursuit. | [BearCode.cs](./Assets/Scripts/BearCode.cs) |
+| **Bunny** | Moves by performing periodic jumps across terrain (`_jumpingVelocity`). Uses an internal jump counter (`counter`) to dynamically switch patrol directions every few hops while adjusting its jump/fall animations. | [BunnyCode.cs](./Assets/Scripts/BunnyCode.cs) |
+| **Other Enemies** | **Hyena**, **Pig**, and **Vulture** provide varied ground and aerial obstacles across different level sections to test player timing and agility. | `HyenaCode.cs`, `PigCode.cs`, `VultureCode.cs` |
 
 ---
 
-### 💾 3. Binary Serialization Save & Load System
+### 3. Binary Serialization Save & Load System
 Instead of relying on basic `PlayerPrefs`, the project implements a secure, extensible, and high-performance **Binary Serialization (`BinaryFormatter`)** architecture to preserve game state.
 
 - **What Gets Saved?**
-  - 🧍 **Player State (`PlayerData`)**: Current health (`health`), exact 3D world coordinates (`Vector3 position`), accumulated score (`score`), and active state (`isDead`).
-  - 👾 **Enemies State (`EnemyData`)**: The exact positions and active/inactive status (`activeSelf`) of every enemy in the scene. (Defeated enemies remain dead when you load a saved game!)
-  - 💎 **Collectibles / Gems (`DiamondData`)**: The active/collected state (`activeSelf`) and positions of all gems scattered throughout the level.
+  - **Player State (`PlayerData`)**: Current health (`health`), exact 3D world coordinates (`Vector3 position`), accumulated score (`score`), and active state (`isDead`).
+  - **Enemies State (`EnemyData`)**: The exact positions and active/inactive status (`activeSelf`) of every enemy in the scene. (Defeated enemies remain dead when you load a saved game!)
+  - **Collectibles / Gems (`DiamondData`)**: The active/collected state (`activeSelf`) and positions of all gems scattered throughout the level.
 - **How It Works:**  
   `SaveSystem.cs` writes dedicated `.data` binary files (`player_1.data`, `enemies_1.data`, `gems_1.data`) directly into `Application.persistentDataPath` tailored specifically to the active scene/build index (`SceneManager.GetActiveScene().buildIndex`).
 
 ---
 
-### 🎬 4. Multi-Level Structure & Scenes
+### 4. Multi-Level Structure & Scenes
 The project consists of 3 core scenes:
 1. `Start.unity` (**Main Menu**): Features a cinematic moving background sequence and interactive start prompt.
 2. `1.Bölüm.unity` (**Level 1**): Introductory level introducing core platforming mechanics, gem collection, and forest/bridge enemy types.
@@ -93,7 +93,7 @@ The project consists of 3 core scenes:
 
 ---
 
-## 🕹️ Controls & Keybindings
+## Controls & Keybindings
 
 Use the following keyboard controls while playing or testing the game in the Unity Editor:
 
@@ -107,10 +107,9 @@ Use the following keyboard controls while playing or testing the game in the Uni
 
 ---
 
-## 📂 Project Architecture & Folder Structure
+## Project Architecture & Folder Structure
 
 ```text
-d:\Projects\OPGOdev2\
 ├── Assets\
 │   ├── Animations\           # Animator Controllers and animation state machines for player & enemies
 │   ├── Datas\                # Serialization & Data Persistence Scripts
@@ -141,7 +140,7 @@ d:\Projects\OPGOdev2\
 
 ---
 
-## 🚀 Installation & Getting Started
+## Installation & Getting Started
 
 1. **Prerequisites:**
    - Install [Unity Hub](https://unity.com/download) and **Unity 6 (6000.4.5f1 or newer)** with URP support.
@@ -152,7 +151,7 @@ d:\Projects\OPGOdev2\
      ```bash
      git clone https://github.com/MuhammedYusufOngel/IGP-SkyPixel.git
      ```
-   - Open **Unity Hub**, click on **Add**, and select the cloned `OPGOdev2` folder.
+   - Open **Unity Hub**, click on **Add**, and select the cloned folder.
    - Launch the project using Unity version **6000.4.5f1**.
 
 3. **Running the Game:**
@@ -161,11 +160,11 @@ d:\Projects\OPGOdev2\
 
 ---
 
-## 👨‍💻 Developer & Credits
+## Developer & Credits
 
 - **Project Developer**: Muhammed Yusuf Öngel
 - **Artwork & Visual Assets**: Ansimuz (*SunnyLand Pixel Art Assets*)
-- **Course / Assignment**: Game Programming Development Assignment 2 (OPGOdev2)
+- **Course / Assignment**: Introduction to Game Programming
 
 ---
 
